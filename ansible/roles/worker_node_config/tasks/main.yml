@@ -1,0 +1,25 @@
+---
+# tasks file for worker_node_config
+
+- name: Create VirtualMachine Extension
+  azure_rm_virtualmachineextension:
+    resource_group: rg-example
+    virtual_machine_name: azure-vm-2
+    name: installK8s-for-worker
+    publisher: Microsoft.Azure.Extensions
+    virtual_machine_extension_type: CustomScript
+    type_handler_version: 2.1
+    settings:
+      fileUris:
+        - "https://stac2.blob.core.windows.net/st-cnt2/{{ src_file }}"
+      commandToExecute: "bash {{ src_file }}"
+
+- name: Copy token-file from local to second vm
+  copy:
+    src: /tmp/fetched
+    dest: "{{ dest_path }}token.sh"
+
+- name: Join worker node to master
+  command: bash ./token.sh
+  become: true
+  become_method: sudo

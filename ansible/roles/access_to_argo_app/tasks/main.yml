@@ -1,0 +1,24 @@
+---
+# tasks file for access_to_argo_app
+
+- name: Install Metallb for public ip allocation
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/manifests/metallb-native.yaml
+
+- name: Copy files on remote server
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - { src: argo-app.yml, dest: "{{ objects_path }}" }
+    - { src: argocd-cli.sh, dest: "{{ objects_path }}" }
+    - { src: ip-addr-pool.yml , dest: "{{ objects_path }}" }
+    - { src: l2-advertisement.yml , dest: "{{ objects_path }}" }
+
+
+- name: Create Argo application and install Argo CLI
+  shell:
+    chdir: "{{ objects_path }}"
+    cmd: |
+      kubectl apply -f .
+      bash argocd-cli.sh

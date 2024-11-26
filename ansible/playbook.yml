@@ -1,0 +1,188 @@
+---
+#- name: Access to Ansible and Azure CLI
+#  hosts: all
+#  become: true
+#  become_user: azureuser
+#  remote_user: azureuser  
+#
+#  roles:
+#    - role: access_to_azure
+
+    #  vars:
+    #    az_client_id: !vault |
+    #          $ANSIBLE_VAULT;1.1;AES256
+    #          34393932393535643034326333626563316563376539336138313061646232656137323632623038
+    #          3562613866383466306662383062643039626235653963300a373632623937383338636632646466
+    #          61613537663832656536636437366236343230353139373064356630666436333234623138633362
+    #          3835333338383262300a613135663836363839663337666166613732313035616364393237343138
+    #          62653234393731636662613739393932346562343062353033316135373337383136393130313962
+    #          6566633032616334636636663762626339333235346662613761
+    #
+    #    az_tenant_id: !vault |
+    #          $ANSIBLE_VAULT;1.1;AES256
+    #          37306234613064386334393037333363636439316135333339363863336463376333386338373838
+    #          3031653165316465386464343930646561316232353564370a303863356531633431653538363435
+    #          61633534643837646338313037376663616539646439336438613136633666613337666333633234
+    #          6166393130343262360a613630623536363438366362353664346166333763343635656436376132
+    #          64616461656662386532333534343532366635313938376261346162343332616365393062636138
+    #          6635346133373637623235376164613938626164366362396366
+    #
+    #    az_client_secret: !vault |
+    #          $ANSIBLE_VAULT;1.1;AES256
+    #          35386230363261303163623266316436643961393861343132313834356135393661613865333932
+    #          6237313831633138646137653538666162366639653665660a336532653935326635343361333865
+    #          62393939393639346232373038313565663738383435646333353063616435393632613930353566
+    #          3435366466616636660a373065343839646464613534323839333165336331303964663131663630
+    #          64353161653037316339613565363737613861653062313634363732316235616162366534303566
+    #          3764336230346534383338613261386636623265643565386238
+
+    #  tasks:
+    #
+    #  - name: Copy and Execute the script
+    #    script: ./preinstall.sh
+    #
+    #  - name: Azure login
+    #    shell: |
+    #      az login --service-principal --username {{ az_client_id }} --password {{ az_client_secret }} --tenant {{ az_tenant_id }}
+    #      sudo apt update -y  
+
+##Section for first vm
+#- name: First vm section      
+#  hosts: azure-vm-1
+#
+#  collections:
+#  - azure.azcollection
+#  - kubernetes.core  
+#
+#  roles:
+#    - role: master_node_config
+
+    #  tasks:
+    #
+    #  - name: Transfer script-file to first vm
+    #    copy: src={{ src_file }} dest={{ dest_path }}
+    #
+    #  - name: Create Storage Account
+    #    azure_rm_storageaccount:
+    #      resource_group: rg-example
+    #      name: stac2
+    #      type: Standard_RAGRS
+    #      allow_blob_public_access: true
+    #      tags:
+    #        purpose: k8s-testing
+    #
+    #  - name: Create Azure SA container
+    #    azure_rm_storageblob:
+    #      resource_group: rg-example
+    #      storage_account_name: stac2
+    #      container: st-cnt2
+    #      blob: "{{ src_file }}"
+    #      src: "{{ dest_path }}{{ src_file }}"
+    #      public_access: container
+    #
+    #  - name: Create VirtualMachine Extension
+    #    azure_rm_virtualmachineextension:
+    #      resource_group: rg-example
+    #      virtual_machine_name: azure-vm-1
+    #      name: installK8s-for-master
+    #      publisher: Microsoft.Azure.Extensions
+    #      virtual_machine_extension_type: CustomScript
+    #      type_handler_version: 2.1
+    #      settings:
+    #        fileUris:
+    #          - "https://stac2.blob.core.windows.net/st-cnt2/{{ src_file }}"
+    #        commandToExecute: "bash {{ src_file }}"
+    #
+    #  - name: Run k8s master config second portion
+    #    script: ./master-conf.sh
+    #
+    #  - name: Install Helm package manager
+    #    script: ./helm-install.sh 
+    #
+    #  - name: Add a helm repository
+    #    helm_repository:
+    #      name: argo
+    #      repo_url: https://argoproj.github.io/argo-helm
+    #
+    #  - name: Helm update
+    #    command: helm repo update        
+    #
+    #
+    #  - name: Install argo-cd chart
+    #    command:
+    #      cmd: helm install argocd -n argocd --create-namespace argo/argo-cd --version 3.35.4
+    #
+    #
+    #  - name: Fetch token-file from first vm to local
+    #    fetch:
+    #      src: "{{ dest_path }}token.sh"
+    #      dest: /tmp/fetched
+    #      flat: yes
+
+
+##Section for second vm          
+- hosts: azure-vm-2
+
+  collections:
+  - azure.azcollection
+
+  roles:
+    - role: worker_node_config
+
+    #  tasks: 
+    #
+    #  - name: Create VirtualMachine Extension
+    #    azure_rm_virtualmachineextension:
+    #      resource_group: rg-example
+    #      virtual_machine_name: azure-vm-2
+    #      name: installK8s-for-worker
+    #      publisher: Microsoft.Azure.Extensions
+    #      virtual_machine_extension_type: CustomScript
+    #      type_handler_version: 2.1
+    #      settings:
+    #        fileUris:
+    #          - "https://stac2.blob.core.windows.net/st-cnt2/{{ src_file_2 }}"
+    #        commandToExecute: "bash {{ src_file_2 }}"
+    #
+    #  - name: Copy token-file from local to second vm
+    #    copy:
+    #      src: /tmp/fetched
+    #      dest: "{{ dest_path }}token.sh"
+    #
+    #  - name: Join worker node to master
+    #    command: bash ./token.sh   
+    #    become: true
+    #    become_method: sudo
+
+
+- hosts: azure-vm-1
+
+  roles:
+    - role: access_to_argo_app
+
+  #  vars:
+  #    objects_path: ~/final-objects/
+
+      #  tasks:
+      #
+      #  - name: Install Metallb for public ip allocation
+      #    shell: |
+      #      kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/manifests/metallb-native.yaml
+      #
+      #  - name: Copy files on remote server
+      #    copy:
+      #      src: "{{ item.src }}"
+      #      dest: "{{ item.dest }}"
+      #    loop:
+      #      - { src: argo-app.yml, dest: "{{ objects_path }}" }
+      #      - { src: argocd-cli.sh, dest: "{{ objects_path }}" }
+      #      - { src: ip-addr-pool.yml , dest: "{{ objects_path }}" }   
+      #      - { src: l2-advertisement.yml , dest: "{{ objects_path }}" }   
+      #
+      #
+      #  - name: Create Argo application and install Argo CLI
+      #    shell:
+      #      chdir: "{{ objects_path }}"
+      #      cmd: |  
+      #        kubectl apply -f .
+      #        bash argocd-cli.sh 

@@ -1,0 +1,10 @@
+---
+# tasks file for access_to_azure
+
+- name: Copy and Execute the script
+  script: preinstall.sh
+
+- name: Azure login
+  shell: |
+    az login --service-principal --username {{ az_client_id }} --password {{ az_client_secret }} --tenant {{ az_tenant_id }}
+    sudo apt update -y

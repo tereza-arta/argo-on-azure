@@ -1,0 +1,4 @@
+---
+# defaults file for access_to_argo_app
+
+objects_path: ~/final-objects/
