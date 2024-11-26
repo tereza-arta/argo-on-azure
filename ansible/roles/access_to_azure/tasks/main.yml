@@ -1,6 +1,4 @@
 ---
-# tasks file for access_to_azure
-
 - name: Copy and Execute the script
   script: preinstall.sh
 
