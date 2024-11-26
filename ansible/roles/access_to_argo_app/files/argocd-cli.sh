@@ -8,6 +8,5 @@ sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 
 rm argocd-linux-amd64
 
-
 #Check argocd installation: "argocd version --client"
 #Then login: "argocd login <argocd-server-reachable-ip>"
