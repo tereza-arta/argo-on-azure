@@ -1,5 +1,4 @@
 ---
-
 - name: Access to Ansible and Azure CLI
   hosts: all
   become: true
@@ -8,7 +7,6 @@
 
   roles:
     - role: access_to_azure
-
 
 ###
 - name: First vm section      
@@ -21,7 +19,6 @@
   roles:
     - role: master_node_config
 
-
 ###      
 - name: Second vm section
   hosts: azure-vm-2
@@ -32,11 +29,9 @@
   roles:
     - role: worker_node_config
 
-
 ###
 - name: Finale actions
   hosts: azure-vm-1
 
   roles:
     - role: access_to_argo_app
-
