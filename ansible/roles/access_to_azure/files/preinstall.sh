@@ -1,4 +1,4 @@
-exec > /tmp/helm-install.log 2>&1
+exec > /tmp/preinstall.log 2>&1
 set -x
 
 sudo apt update
@@ -6,13 +6,11 @@ sudo apt install software-properties-common
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible -y
 
-
 ansible-galaxy collection install azure.azcollection --force
 #or apt-get
 sudo apt install python3-pip -y
 
 sudo pip3 install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements.txt
-
 
 sudo apt update
 
@@ -37,4 +35,3 @@ Signed-by: /etc/apt/keyrings/microsoft.gpg" | sudo tee /etc/apt/sources.list.d/a
 sudo apt update
 
 sudo apt install azure-cli
-
