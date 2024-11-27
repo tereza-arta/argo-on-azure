@@ -38,6 +38,11 @@
 - name: Run k8s master config second portion
   script: master-conf.sh
 
+- name: Copy argo-cd values.yml file to the target machine
+  copy:
+    src: values.yml
+    dest: /tmp/values.yml
+
 - name: Install Helm package manager
   script: helm-install.sh
 
@@ -51,7 +56,7 @@
 
 - name: Install argo-cd chart
   command:
-    cmd: helm install argocd -n argocd --create-namespace argo/argo-cd --version 3.35.4
+    cmd: helm install argocd -n argocd --create-namespace argo/argo-cd --version 3.35.4 -f /tmp/values.yml
 
 
 - name: Fetch token-file from first vm to local
