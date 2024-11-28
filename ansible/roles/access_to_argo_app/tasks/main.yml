@@ -1,10 +1,6 @@
 ---
 # tasks file for access_to_argo_app
 
-- name: Install Metallb for public ip allocation
-  shell: |
-    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/manifests/metallb-native.yaml
-
 - name: Copy files on remote server
   copy:
     src: "{{ item.src }}"
