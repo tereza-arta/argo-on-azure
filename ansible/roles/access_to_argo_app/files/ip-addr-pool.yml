@@ -1,9 +1,0 @@
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: addr-pool
-  namespace: metallb-system
-spec:
-  addresses:
-  - 13.94.88.87-13.94.88.92

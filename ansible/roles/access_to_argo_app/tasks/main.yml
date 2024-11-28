@@ -12,8 +12,6 @@
   loop:
     - { src: argo-app.yml, dest: "{{ objects_path }}" }
     - { src: argocd-cli.sh, dest: "{{ objects_path }}" }
-    - { src: ip-addr-pool.yml , dest: "{{ objects_path }}" }
-    - { src: l2-advertisement.yml , dest: "{{ objects_path }}" }
 
 
 - name: Create Argo application and install Argo CLI
