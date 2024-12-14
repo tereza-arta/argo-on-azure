@@ -1,6 +1,6 @@
 variable "enable_net" {
-  type = bool
-  default = "false"
+  type        = bool
+  default     = "false"
   description = "Enable current module or not"
 }
 
@@ -15,23 +15,23 @@ variable "az_region" {
 }
 
 variable "virtual_net" {
-  default = "vnet"
+  default     = "vnet"
   description = "Virtual network name"
 }
 
 variable "addr_range" {
-  type= list(string)
-  default = ["10.0.0.0/16"]
+  type        = list(string)
+  default     = ["10.0.0.0/16"]
   description = "Virtual network address-space"
 }
 
 variable "subnet" {
-  default = "Public-subnet"
+  default     = "Public-subnet"
   description = "Public-subnet name"
 }
 
 variable "sub-addr-prefix" {
-  default = "10.0.1.0/24"
+  default     = "10.0.1.0/24"
   description = "Cidr of public subnet"
 }
 
@@ -42,7 +42,7 @@ variable "pub_ip_cnt" {
 }
 
 variable "pub_ip_alloc_method" {
-  default = "Static"
+  default     = "Static"
   description = "Public IP allocation method"
 }
 
