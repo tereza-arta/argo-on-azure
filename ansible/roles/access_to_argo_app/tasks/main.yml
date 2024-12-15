@@ -1,15 +1,8 @@
 ---
-- name: Copy files on remote server
+- name: Copy argo-app file on remote server
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-  loop:
-    - { src: argo-app.yml, dest: "{{ objects_path }}" }
-    - { src: argocd-cli.sh, dest: "{{ objects_path }}" }
+    src: argo-app.yml
+    dest: ~/
 
-- name: Create Argo application and install Argo CLI
-  shell:
-    chdir: "{{ objects_path }}"
-    cmd: |
-      kubectl apply -f .
-      bash argocd-cli.sh
+- name: Create Argo application
+  shell: kubectl apply -f argo-app.yml
