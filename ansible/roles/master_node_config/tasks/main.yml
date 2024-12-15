@@ -1,6 +1,4 @@
 ---
-# tasks file for master_node_config
-
 - name: Transfer script-file to first vm
   copy: src={{ src_file }} dest={{ dest_path }}
 
@@ -57,7 +55,6 @@
 - name: Install argo-cd chart
   command:
     cmd: helm install argocd -n argocd --create-namespace argo/argo-cd --version 3.35.4 -f /tmp/values.yml
-
 
 - name: Fetch token-file from first vm to local
   fetch:
