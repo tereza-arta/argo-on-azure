@@ -1,6 +1,4 @@
 ---
-# tasks file for worker_node_config
-
 - name: Create VirtualMachine Extension
   azure_rm_virtualmachineextension:
     resource_group: rg-example
