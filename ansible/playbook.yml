@@ -30,7 +30,7 @@
     - role: worker_node_config
 
 ###
-- name: Finale actions
+- name: Finale action
   hosts: azure-vm-1
 
   roles:
