@@ -1,6 +1,4 @@
 ---
-# tasks file for access_to_argo_app
-
 - name: Copy files on remote server
   copy:
     src: "{{ item.src }}"
@@ -8,7 +6,6 @@
   loop:
     - { src: argo-app.yml, dest: "{{ objects_path }}" }
     - { src: argocd-cli.sh, dest: "{{ objects_path }}" }
-
 
 - name: Create Argo application and install Argo CLI
   shell:
