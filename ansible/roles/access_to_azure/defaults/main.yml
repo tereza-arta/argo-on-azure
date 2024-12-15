@@ -1,6 +1,4 @@
 ---
-# defaults file for access_to_azure
-
 az_client_id: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           34393932393535643034326333626563316563376539336138313061646232656137323632623038
