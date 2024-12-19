@@ -22,3 +22,4 @@ spec:
       - CreateNamespace=false
       - PrunePropagationPolicy=foreground
       - PruneLast=true    
+

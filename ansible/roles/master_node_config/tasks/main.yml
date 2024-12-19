@@ -1,39 +1,8 @@
 ---
-- name: Transfer script-file to first vm
-  copy: src={{ src_file }} dest={{ dest_path }}
+- name: Configure Kubernetes
+  script: k8s-cfg.sh
 
-- name: Create Storage Account
-  azure_rm_storageaccount:
-    resource_group: rg-example
-    name: stac2
-    type: Standard_RAGRS
-    allow_blob_public_access: true
-    tags:
-      purpose: k8s-testing
-
-- name: Create Azure SA container
-  azure_rm_storageblob:
-    resource_group: rg-example
-    storage_account_name: stac2
-    container: st-cnt2
-    blob: "{{ src_file }}"
-    src: "{{ dest_path }}{{ src_file }}"
-    public_access: container
-
-- name: Create VirtualMachine Extension
-  azure_rm_virtualmachineextension:
-    resource_group: rg-example
-    virtual_machine_name: azure-vm-1
-    name: installK8s-for-master
-    publisher: Microsoft.Azure.Extensions
-    virtual_machine_extension_type: CustomScript
-    type_handler_version: 2.1
-    settings:
-      fileUris:
-        - "https://stac2.blob.core.windows.net/st-cnt2/{{ src_file }}"
-      commandToExecute: "bash {{ src_file }}"
-
-- name: Run k8s master config second portion
+- name: Configure Kubernetes master-node
   script: master-conf.sh
 
 - name: Copy argo-cd values.yml file to the target machine
@@ -43,6 +12,10 @@
 
 - name: Install Helm package manager
   script: helm-install.sh
+
+#- name: Add a helm repository with cli
+#  command: 
+#  cmd: helm repo add argo https://argoproj.github.io/argo-helm
 
 - name: Add a helm repository
   kubernetes.core.helm_repository:
@@ -61,3 +34,4 @@
     src: "{{ dest_path }}token.sh"
     dest: /tmp/fetched
     flat: yes
+

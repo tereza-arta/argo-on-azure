@@ -11,3 +11,4 @@ kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/we
 echo '#!/bin/bash' > token.sh
 
 kubeadm token create --print-join-command >> token.sh
+

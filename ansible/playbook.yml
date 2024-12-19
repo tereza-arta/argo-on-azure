@@ -1,19 +1,9 @@
 ---
-- name: Access to Ansible and Azure CLI
-  hosts: all
-  become: true
-  become_user: azureuser
-  remote_user: azureuser  
-
-  roles:
-    - role: access_to_azure
-
 ###
 - name: First vm section      
   hosts: azure-vm-1
 
   collections:
-  - azure.azcollection
   - kubernetes.core  
 
   roles:
@@ -23,15 +13,13 @@
 - name: Second vm section
   hosts: azure-vm-2
 
-  collections:
-  - azure.azcollection
-
   roles:
     - role: worker_node_config
 
 ###
-- name: Finale action
+- name: Final action
   hosts: azure-vm-1
 
   roles:
     - role: access_to_argo_app
+

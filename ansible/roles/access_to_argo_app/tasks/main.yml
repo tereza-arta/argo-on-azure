@@ -6,3 +6,4 @@
 
 - name: Create Argo application
   shell: kubectl apply -f argo-app.yml
+
