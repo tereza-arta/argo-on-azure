@@ -1,11 +1,5 @@
-variable "enable_vm" {
-  type        = bool
-  default     = false
-  description = "Enable <vm_config> module or not"
-}
-
 variable "location" {
-  default     = ""
+  type        = string
   description = "Azure region location"
 }
 
@@ -22,20 +16,32 @@ variable "img_sku" {
   default = "20_04-lts"
 }
 
-variable "vm_cnt" {
+variable "pub_vm_cnt" {
   type        = number
   default     = 2
   description = "Virtual Machine count"
 }
 
-variable "vm_name" {
+variable "priv_vm_cnt" {
+  type        = number
+  default     = 0
+  description = "Virtual Machine count in Private-subnet"
+}
+
+variable "pub_vm_name" {
   type        = string
-  default     = "azure-vm"
+  default     = "azure-pub-vm"
   description = "Name of Azure RM virtual machine"
 }
 
+variable "priv_vm_name" {
+  type        = string
+  default     = "azure-priv-vm"
+  description = "Name of Azure RM virtual machine in Private-subnet"
+}
+
 variable "rg_name" {
-  default     = ""
+  type        = string
   description = "Resource Group name"
 }
 
@@ -49,9 +55,19 @@ variable "admin_uname" {
   description = "VM admin username"
 }
 
+variable "ssh_key_file" {
+  default     = "~/.ssh/id_rsa.pub"
+  description = "Path of SSH public-key file"
+}
+
 variable "net_interface_ids" {
   type        = list(string)
   description = "Network interface ids list"
+}
+
+variable "net_interface_ids_priv" {
+  type        = list(string)
+  description = "Network interface ids(for private) list"
 }
 
 variable "os_disk_caching" {
@@ -63,3 +79,4 @@ variable "os_disk_sa" {
   default     = "Standard_LRS"
   description = "OS disk storage account type"
 }
+

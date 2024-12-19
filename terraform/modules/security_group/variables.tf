@@ -1,7 +1,6 @@
-variable "enable_nsg" {
-  type        = bool
-  default     = false
-  description = "Enable <security_group> module or not"
+variable "nsg_cnt" {
+  type    = number
+  default = 1
 }
 
 variable "nsg_name" {
@@ -10,98 +9,72 @@ variable "nsg_name" {
 }
 
 variable "location" {
-  default     = ""
+  type        = string
   description = "Azure region location"
 }
 
 variable "rg_name" {
-  default     = ""
+  type        = string
   description = "Resource Group name"
 }
 
-variable "sg_rule_1_name" {
-  default     = "Allow-port-22"
-  description = "Name of NSG rule-1"
-}
-
-variable "sg_rule_2_name" {
-  default     = "Allow-port-80"
-  description = "Name of NSG rule-2"
-}
-
-variable "sg_rule_3_name" {
-  default     = "Argo-app-nodeport"
-  description = "Allow argo-app nodeport"
-}
-
-variable "sg_rule_4_name" {
-  default     = "Base-app-nodeport"
-  description = "Allow base-app nodeport"
-}
-
-variable "sg_rule_1_prt" {
+variable "inbound_cnt" {
   type        = number
-  default     = 100
-  description = "NSG rule-1 priority number"
+  default     = 4
+  description = "Count of NSG Inbound-rule"
 }
 
-variable "sg_rule_2_prt" {
+variable "outbound_cnt" {
   type        = number
-  default     = 110
-  description = "NSG rule-2 priority number"
+  default     = 0
+  description = "Count of NSG Inbound-rule"
 }
 
-variable "sg_rule_3_prt" {
-  type        = number
-  default     = 120
-  description = "NSG rule-3 priority number"
+variable "rule_type_1" {
+  default     = "Inbound"
+  description = "Rule type - Inbound"
 }
 
-variable "sg_rule_4_prt" {
-  type        = number
-  default     = 130
-  description = "NSG rule-4 priority number"
+variable "rule_type_2" {
+  default     = "Outbound"
+  description = "Rule type - Inbound"
 }
 
-variable "argo-app-nodeport" {
-  type        = number
-  default     = 30009
-  description = "Argo app svc nodeport number"
-}
-
-variable "base-app-nodeport" {
-  type        = number
-  default     = 30008
-  description = "Argo app svc nodeport number"
-}
-
-variable "sg_rule_type" {
-  default = "Inbound"
-}
-
-variable "sg_rule_access" {
-  default     = "Allow"
-  description = "Allow or deny access"
-}
-
-
-variable "sg_rule_protocol" {
+variable "rule_protocol" {
   default = "Tcp"
 }
 
-variable "sg_src_port_range" {
+variable "src_port_range" {
   default     = "*"
   description = "NSG rule source port range"
 }
 
-variable "addr_prefix" {
+variable "dest_port_range" {
+  type        = list(number)
+  default     = [22, 80, 30009, 30008]
+  description = "List of NSG Inbound rules desination"
+}
+
+variable "out_dest_port_range" {
+  type        = any
+  default     = ["*"]
+  description = "List of NSG Inbound rules desination"
+}
+
+variable "src_addr_prefix" {
   default     = "*"
   description = "NSG src/dest address prefix"
 }
 
-variable "sg_dest_port_range" {
-  default     = "22"
-  description = "NSG rule destination port range"
+variable "dest_addr_prefix" {
+  default     = "*"
+  description = "NSG src/dest address prefix"
+}
+
+variable "sg_index" {
+  type        = number
+  default     = 0
+  description = "Index of preferred NSG"
 }
 
 variable "ass_cnt" {
@@ -114,3 +87,4 @@ variable "net_interface_ids" {
   type        = list(string)
   description = "Network interface ids list"
 }
+
