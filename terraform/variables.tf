@@ -320,11 +320,6 @@ variable "ssh_key_file" {
   description = "Path of SSH public-key file"
 }
 
-variable "net_interface_ids_priv" {
-  type        = list(string)
-  description = "Network interface ids(for private) list"
-}
-
 variable "os_disk_caching" {
   default     = "ReadWrite"
   description = "VM os_disk caching"
