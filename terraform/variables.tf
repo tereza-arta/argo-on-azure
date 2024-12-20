@@ -11,11 +11,6 @@ variable "rg_cnt" {
   description = "Resource Group count"
 }
 
-variable "rg_name" {
-  default     = "rg-example"
-  description = "Resource group name"
-}
-
 variable "az_region" {
   type        = list(string)
   default     = ["North Europe", "France Central", "East US"]
@@ -201,16 +196,6 @@ variable "nsg_name" {
   description = "Network Security Group name"
 }
 
-variable "location" {
-  type        = string
-  description = "Azure region location"
-}
-
-variable "rg_name" {
-  type        = string
-  description = "Resource Group name"
-}
-
 variable "inbound_cnt" {
   type        = number
   default     = 4
@@ -276,21 +261,11 @@ variable "ass_cnt" {
   description = "NSG-NI-association resource count"
 }
 
-variable "net_interface_ids" {
-  type        = list(string)
-  description = "Network interface ids list"
-}
-
 //>>> Variables of the "vm_config" module
 variable "enable_vm" {
   type        = bool
   default     = "true"
   description = "Enable current module or not"
-}
-
-variable "location" {
-  type        = string
-  description = "Azure region location"
 }
 
 variable "img_publisher" {
@@ -330,11 +305,6 @@ variable "priv_vm_name" {
   description = "Name of Azure RM virtual machine in Private-subnet"
 }
 
-variable "rg_name" {
-  type        = string
-  description = "Resource Group name"
-}
-
 variable "vm_size" {
   type    = string
   default = "Standard_B2s"
@@ -348,11 +318,6 @@ variable "admin_uname" {
 variable "ssh_key_file" {
   default     = "~/.ssh/id_rsa.pub"
   description = "Path of SSH public-key file"
-}
-
-variable "net_interface_ids" {
-  type        = list(string)
-  description = "Network interface ids list"
 }
 
 variable "net_interface_ids_priv" {
