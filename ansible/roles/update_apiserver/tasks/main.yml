@@ -1,5 +1,4 @@
 ---
----
 - name: Debug ansible_host variable
   debug:
     msg: "The current ansible_host is: {{ ansible_host }}"
@@ -10,4 +9,3 @@
     sudo kubeadm init phase certs apiserver --apiserver-cert-extra-sans={{ ansible_host }}
     sudo systemctl restart kubelet
   become: true
-
