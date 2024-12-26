@@ -40,8 +40,16 @@ variable "rule_type_2" {
   description = "Rule type - Inbound"
 }
 
-variable "rule_protocol" {
-  default = "Tcp"
+variable "tcp_cnt" {
+  type        = number
+  default     = 5
+  description = "Count of rules with TCP protocol"
+}
+
+variable "udp_cnt" {
+  type        = number
+  default     = 0
+  description = "Count of rules with UDP protocol"
 }
 
 variable "src_port_range" {
@@ -51,7 +59,7 @@ variable "src_port_range" {
 
 variable "dest_port_range" {
   type        = list(number)
-  default     = [22, 80, 30009, 30008]
+  default     = [22, 80, 30009, 30008, 6443]
   description = "List of NSG Inbound rules desination"
 }
 
@@ -87,4 +95,5 @@ variable "net_interface_ids" {
   type        = list(string)
   description = "Network interface ids list"
 }
+
 
