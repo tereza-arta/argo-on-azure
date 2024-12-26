@@ -17,9 +17,23 @@
     - role: worker_node_config
 
 ###
-- name: Final action
+- name: Create argocd application
   hosts: azure-vm-1
 
   roles:
     - role: access_to_argo_app
+
+###
+- name: Add public-ip to API Server in master node
+  hosts: azure-vm-1
+
+  roles:
+    - role: update_apiserver  
+
+###
+- name: Establish local kubectl connection to remote cluster
+  hosts: localhost
+
+  roles:
+    - role: kubectl_on_local  
 

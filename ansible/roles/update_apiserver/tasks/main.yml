@@ -1,0 +1,13 @@
+---
+---
+- name: Debug ansible_host variable
+  debug:
+    msg: "The current ansible_host is: {{ ansible_host }}"
+
+- name: Update k8s API Server IP address
+  shell: |
+    sudo rm /etc/kubernetes/pki/apiserver.*
+    sudo kubeadm init phase certs apiserver --apiserver-cert-extra-sans={{ ansible_host }}
+    sudo systemctl restart kubelet
+  become: true
+

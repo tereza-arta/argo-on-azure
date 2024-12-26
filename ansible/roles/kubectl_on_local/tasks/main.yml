@@ -1,0 +1,32 @@
+---
+- name: Remove the local .kube directory(if exists)
+  file:
+    path: "{{ lookup('env', 'HOME') }}/.kube"
+    state: absent
+  ignore_errors: yes
+
+- name: kubectl installation on local machine
+  script: kubectl-install.sh
+  ignore_errors: yes
+
+- name: Set environment variable
+  set_fact:
+    master_node_ip: "{{ hostvars[groups['Azure_Srv'][0]].ansible_host }}"
+
+- name: Copy .kube directory from remote to local
+  shell: |
+    scp -r azureuser@{{ master_node_ip }}:/home/azureuser/.kube/ {{ lookup('env', 'HOME') }}/.kube
+
+- name: Update Kubernetes API Server IP address
+  replace:
+    path: ~/.kube/config
+    regexp: '    server: https://(.*)$'
+    replace: '    server: https://{{ master_node_ip }}:6443'
+    backup: yes
+
+- name: Export Kubeconfig env-variable
+  shell: export KUBECONFIG={{lookup("env", "HOME")}}/.kube/config
+
+- name: Restart kubelet
+  command: sudo systemctl restart kubelet
+
